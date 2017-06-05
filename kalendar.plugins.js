@@ -70,14 +70,12 @@ Kalendar.prototype.initEvent=function(){
 	document.getElementById(this.eleID+'KalendarPrev').onclick=function(){
 		var prevDate=new Date(_this.targetDay);
 		prevDate.setMonth(prevDate.getMonth()-1);
-		_this.targetDay=prevDate.getTime();
-		_this.randerKalendar(_this.targetDay)
+		_this.setYearAndMonth(prevDate.getFullYear(),prevDate.getMonth()+1)
 	}
 	document.getElementById(this.eleID+'KalendarNext').onclick=function(){
-		var prevDate=new Date(_this.targetDay);
-		prevDate.setMonth(prevDate.getMonth()+1);
-		_this.targetDay=prevDate.getTime();
-		_this.randerKalendar(_this.targetDay)
+		var nextDate=new Date(_this.targetDay);
+		nextDate.setMonth(nextDate.getMonth()+1);
+		_this.setYearAndMonth(nextDate.getFullYear(),nextDate.getMonth()+1)
 	}
 
 	// 标题栏年月点击事件处理

@@ -59,7 +59,7 @@ Kalendar.prototype.init=function(eleID,options){
 }
 // 初始化节点
 Kalendar.prototype.initDom=function(ele,options){
-	var headerString='<div id="'+this.eleID+'KalendarHeader"><button id="'+this.eleID+'KalendarPrev">prev</button><span id="'+this.eleID+'KalendarHeaderInfo">headerInfo</span><button id="'+this.eleID+'KalendarNext">next</button></div>';
+	var headerString='<div id="'+this.eleID+'KalendarHeader"><button id="'+this.eleID+'KalendarPrev">&lt;</button><span id="'+this.eleID+'KalendarHeaderInfo">headerInfo</span><button id="'+this.eleID+'KalendarNext">&gt;</button></div>';
 	var bodyString='<div id="'+this.eleID+'KalendarBody">body</div>'
 	ele.innerHTML=headerString+bodyString;
 }
@@ -81,17 +81,18 @@ Kalendar.prototype.initEvent=function(){
 	// 标题栏年月点击事件处理
 	document.getElementById(this.eleID+'KalendarHeaderInfo').onclick=function(){
 		// 创建弹窗
+		//将当前年/月填入输入框
 		var MaskStyle='position:fixed; width:100%; height:100%; background:rgba(0,0,0,0.5); top:0; left:0; text-align:center;';
 		var ContentStyle='position:absolute; left:50%; top:50%; margin-left:-100px; maegin-top:75px; width:200px; height:150px; background:#fff;';
 		var TitleStyle='font-size:18px; font-weight:normal; line-height:20px;'
 		var InputStype='width:60px;';
 		var ButtomStype='margin:25px 10px; ';
 
-		var KalendarPopHtmlString='<div id="'+_this.eleID+'KalendarPop" style="'+MaskStyle+'"><div class="content" style="'+ContentStyle+'"><h3 class="kalendarPopHeader" style="'+TitleStyle+'">请输入目标年/月</h3><div class="selector"><input type="number" name="year" style="'+InputStype+'" /> 年 <input type="number" name="month" style="'+InputStype+'" /> 月 </div><div class="button-group"><button style="'+ButtomStype+'">确认</button><button style="'+ButtomStype+'">取消</button></div></div><div>';
+		var KalendarPopHtmlString='<div id="'+_this.eleID+'KalendarPop" style="'+MaskStyle+'"><div class="content" style="'+ContentStyle+'"><h3 class="kalendarPopHeader" style="'+TitleStyle+'">请输入目标年/月</h3><div class="selector"><input type="number" name="year" style="'+InputStype+'" value="'+_this.targetYear+'" /> 年 <input type="number" name="month" style="'+InputStype+'" value="'+_this.targetMonth+'" /> 月 </div><div class="button-group"><button style="'+ButtomStype+'">确认</button><button style="'+ButtomStype+'">取消</button></div></div><div>';
 		var KalendarPopContainer=document.createElement('div');
+		KalendarPopContainer.id='KalendarPopContainer';
 		KalendarPopContainer.innerHTML+=KalendarPopHtmlString;
 		document.body.appendChild(KalendarPopContainer);
-
 		var KalendarPop=document.getElementById(_this.eleID+'KalendarPop');
 
 		function closeKalendarPop(){
@@ -105,8 +106,8 @@ Kalendar.prototype.initEvent=function(){
 			var inputGroup=KalendarPop.getElementsByTagName('input');
 
 			// 格式验证
-			if(inputGroup[0].value<1){
-				alert('年份必须是大于0的整数');
+			if(inputGroup[0].value<100){
+				alert('年份必须是大于99的整数');
 				return
 			}
 			if(inputGroup[1].value<1||inputGroup[1].value>12){
@@ -173,12 +174,12 @@ Kalendar.prototype.randerKalendar=function(targetDay){
 			itemHTML+='<td class="date null">'
 		}else{
 			if(randerList[i]==nowDate&&targetYear==nowYear&&targetMonth==nowMonth){
-				itemHTML+='<td class="date now" style="color:#fff;background:#000;text-align:center;">'
+				itemHTML+='<td class="date now" style="color:#fff;background:#000;text-align:center;"><span>'
 			}else{
-				itemHTML+='<td class="date" style="text-align:center;">'
+				itemHTML+='<td class="date" style="text-align:center;"><span>'
 			}
 		}
-		itemHTML+=randerList[i]+'</td>';
+		itemHTML+=randerList[i]+'</span></td>';
 
 		if(i==randerList.length-1)itemHTML+='</tr>';
 

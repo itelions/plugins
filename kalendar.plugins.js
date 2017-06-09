@@ -21,8 +21,12 @@ function Kalendar(eleID,options){
 	this.default={
 		nowDay:null,
 		activeDay:null,
-		dateClickCallBack:null,
-		yearAndMonthChange:null
+		// 日期点击事件
+		dateClick:null,
+		// 年月选择窗口事件
+		yearAndMonthChange:null,
+		popClose:null,
+		popOpen:null,
 	};
 	this.init(eleID,options);
 }
@@ -80,6 +84,8 @@ Kalendar.prototype.initEvent=function(){
 
 	// 标题栏年月点击事件处理
 	document.getElementById(this.eleID+'KalendarHeaderInfo').onclick=function(){
+		_this.default.popOpen&&_this.default.popOpen()
+
 		// 创建弹窗
 		//将当前年/月填入输入框
 		var MaskStyle='position:fixed; width:100%; height:100%; background:rgba(0,0,0,0.5); top:0; left:0; text-align:center;';
@@ -96,6 +102,7 @@ Kalendar.prototype.initEvent=function(){
 		var KalendarPop=document.getElementById(_this.eleID+'KalendarPop');
 
 		function closeKalendarPop(){
+			_this.default.popClose&&_this.default.popClose()
 			document.body.removeChild(KalendarPopContainer);
 		}
 
@@ -174,9 +181,9 @@ Kalendar.prototype.randerKalendar=function(targetDay){
 			itemHTML+='<td class="date null">'
 		}else{
 			if(randerList[i]==nowDate&&targetYear==nowYear&&targetMonth==nowMonth){
-				itemHTML+='<td class="date now" style="color:#fff;background:#000;text-align:center;"><span>'
+				itemHTML+='<td class="date now" style="color:#fff;background:#000;text-align:center;"><span class="date-content">'
 			}else{
-				itemHTML+='<td class="date" style="text-align:center;"><span>'
+				itemHTML+='<td class="date" style="text-align:center;"><span class="date-content">'
 			}
 		}
 		itemHTML+=randerList[i]+'</span></td>';
@@ -190,15 +197,16 @@ Kalendar.prototype.randerKalendar=function(targetDay){
 	document.getElementById(this.eleID+'KalendarBody').innerHTML=randerHtml;
 	document.getElementById(this.eleID+'KalendarHeaderInfo').innerHTML=targetYear+'年'+targetMonth+'月';
 
-	var tablebody=document.getElementById(this.eleID+'KalendarBody')
+	var tablebody=document.getElementById(this.eleID+'KalendarBody');
 	var dateList=tablebody.getElementsByClassName('date');
 	
 	var _this=this;
 	for(var i=0;i<randerList.length;i++){
 		if(dateList[i].innerHTML!==''){
-			dateList[i].onclick=(function(i){
+			dateList[i].getElementsByClassName('date-content')[0]
+			.onclick=(function(i){
 				return function(){
-					console.log(targetYear+'/'+targetMonth+'/'+randerList[i])
+					_this.default.dateClick&&_this.default.dateClick(targetYear+'/'+targetMonth+'/'+randerList[i])
 				}
 			})(i)
 		}
@@ -213,9 +221,13 @@ Kalendar.prototype.setYearAndMonth=function(year,month){
 	this.default.yearAndMonthChange&&this.default.yearAndMonthChange(year+'/'+month);
 	this.randerKalendar(this.targetDay);
 };
+// 将日期重新定位到今天
+Kalendar.prototype.reset=function(){
+	this.targetDay=this.nowDay;
+	this.randerKalendar(this.targetDay);
+}
 // 废除插件
 Kalendar.prototype.destroy=function(){
 	item.ele=null;
 	document.getElementById(this.eleID).innerHTML='';
-}
-;
+};

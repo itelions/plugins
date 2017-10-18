@@ -1,0 +1,120 @@
+<meta charset="utf-8">
+<style type="text/css">
+body{
+	width: 500px;
+	height: 300px;
+	font-family: 'Microsoft Yahei';
+}
+#img_viewer{
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	position: relative;
+	background:#aaa;
+}
+#img_box{
+	height: 100%;
+	overflow: hidden;
+	position: absolute;
+	transition: all .3s;
+	top: 0;
+	left: 0;
+}
+
+#img_box .img-item{
+	width: 500px;
+	height: 300px;
+	float: left;
+	position: relative;
+}
+.img-item img{
+	max-width: 100%;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%,-50%);
+}
+
+#active_title{
+	position: absolute;
+	z-index: 2;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 30px;
+	line-height: 30px;
+	text-align: center;
+	letter-spacing: 1px;
+	font-size: 16px;
+	background: rgba(0,0,0,0.5);
+	color: rgba(255,255,255,0.8);
+	transition: all .3s;
+	opacity: 0;
+}
+
+#img_viewer:hover #active_title{
+ opacity: 1;
+}
+
+#img_viewer:hover .btn{
+	opacity: 1;
+}
+
+.btn{
+	opacity: 0;
+	transition: all .3s;
+	cursor: pointer;
+	position: absolute;
+	z-index: 2;
+	border-radius: 50%;
+	top: 50%;
+	margin-top: -20px;
+	width: 50px;
+	height: 50px;
+	color:#fff;
+	font-size: 50px;
+	line-height: 50px;
+	font-weight: bold;
+	text-align: center;
+	background: rgba(0,0,0,0.5);
+}
+.btn:hover{
+	background: rgba(0,0,0,0.6);
+}
+.btn span{
+	transition: all .3s;
+	border: 18px solid transparent;
+    display: block;
+    position: relative;
+    top: 7px;
+}
+#left_btn{
+	left: 30px;
+}
+#left_btn span{
+	border-right-color: rgba(255,255,255,0.6);
+    left: -20px;
+}
+#right_btn{
+	right: 30px;
+}
+#right_btn span{
+	border-left-color: rgba(255,255,255,0.6);
+    right: -20px;
+}
+#left_btn:hover span{
+	border-right-color: rgba(255,255,255,0.8);
+}
+#right_btn:hover span{
+	border-left-color: rgba(255,255,255,0.8);
+}
+</style>
+<div id="img_viewer">
+	<div id="active_title">
+		<span id="showing_index">nope</span>
+	</div>
+	<div id="img_box"></div>
+	<div id="left_btn" class="btn"><span></span></div>
+	<div id="right_btn" class="btn"><span></span></div>
+</div>
+<script src="popup.js"></script>

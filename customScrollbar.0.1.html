@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>自定义滚动条基本原理</title>
+	<style>
+	*{
+		margin: 0;
+		padding: 0;
+	}
+		#outer_box{
+			overflow:hidden;
+			width: 300px;
+			height: 500px;
+			border:2px solid #000;
+			position: relative;
+		}
+		#scroller{
+			overflow-x:hidden;
+			overflow-y: auto;
+			width: 100%;
+			height: 100%;
+		}
+		#inner_box{
+			width: 100%;
+			height: 800px;
+			line-height: 800px;
+			background: orange;
+		}
+		#scrollbar{
+			width: 10px;
+			position: absolute;
+			height: 100%;
+			top: 0;
+			right: 0;
+			background: rgba(0,0,0,0.3);
+		}
+		#scrollHandler{
+			cursor:pointer;
+			position: absolute;
+			left: 0;
+			width: 10px;
+			top: 0;
+			height: 100px;
+			background: rgba(0,0,0,0.3);
+			transition: background .3s;
+		}
+		#scrollHandler:hover{
+			background: rgba(0,0,0,0.5);
+		}
+	</style>
+</head>
+<body>
+	<div id="outer_box">
+		<div id="scroller">
+			<div id="inner_box">
+				<span><-- mark</span>
+			</div>
+		</div>
+		<div id="scrollbar">
+			<div id="scrollHandler"></div>
+		</div>
+		<div id="test"></div>
+	</div>
+	<script type="text/javascript">
+		var stopWatchScroll=false;	
+		var inner_box=document.getElementById('inner_box');
+		var outer_box=document.getElementById('outer_box');
+		var scroller=document.getElementById('scroller');
+		var scrollHandler=document.getElementById('scrollHandler');
+		
+		var scrollerWidth=outer_box.offsetWidth-inner_box.offsetWidth;
+		scroller.style.paddingRight=scrollerWidth+'px';
+		inner_box.style.width=outer_box.offsetWidth+'px';
+
+		// console.log(outer_box.offsetHeight,inner_box.offsetHeight);
+		scrollHandler.style.height=(outer_box.offsetHeight/inner_box.offsetHeight)*scroller.offsetHeight+'px';
+		scroller.onscroll=function (e) {
+			if(stopWatchScroll)return;
+			var evt=window.event||e;
+			scrollHandler.style.top=(evt.target.scrollTop/inner_box.offsetHeight)*scroller.offsetHeight+'px';
+		}
+		scrollHandler.onmousedown=function(e){
+			stopWatchScroll=true;
+			var evt1=window.event||e;
+			e.preventDefault();
+			var staticOffset=evt1.offsetY;
+			scrollbar.onmousemove=function(e2){
+				var evt2=window.event||e2;
+				var scrolltop=document.body.scrollTop||document.documentElement.scrollTop;
+				var scrollHeight=evt2.clientY-(this.offsetTop-scrolltop)-evt1.offsetY;
+				if(scrollHeight<0)scrollHeight=0;
+				var maxScrollHeight=this.offsetHeight-scrollHandler.offsetHeight
+				if(scrollHeight>maxScrollHeight)scrollHeight=maxScrollHeight;
+				scrollHandler.style.top=scrollHeight+'px';
+				scroller.scrollTop=(scrollHeight/this.offsetHeight)*outer_box.offsetHeight;
+			}
+			scrollHandler.onmouseup=function(){
+				scrollbar.onmousemove=null;
+				scrollHandler.onmouseup=null;
+				scrollHandler.onmouseout=null;
+				stopWatchScroll=false;
+			}
+			scrollHandler.onmouseout=function(){
+				scrollbar.onmousemove=null;
+				scrollHandler.onmouseup=null;
+				scrollHandler.onmouseout=null;
+				stopWatchScroll=false;
+			}
+		}
+	</script>
+</body>
+</html>

@@ -45,4 +45,18 @@
 	function changeShowingIndex(){
 		document.getElementById('showing_index').innerHTML=(active_idx+1)+'/'+img_group.length;
 	}
+
+	var stopWheel=false;
+	document.body.onmousewheel=function(e){
+		if(stopWheel)return
+		if(e.deltaY>0){
+			changeActiveIdx(0);
+		}else{
+			changeActiveIdx(1);
+		}
+		stopWheel=true;
+		setTimeout(function(){
+			stopWheel=false;
+		},75)
+	}
 })()

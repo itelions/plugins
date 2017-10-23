@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Table</title>
+	<style>
+		table{
+			border: 0;
+		}
+		td{
+			padding: 0;
+		}
+		#fixed_table {
+			border: 1px solid #aaa;
+			width: 400px;
+			height: 300px;
+			padding-top: 30px;
+			box-sizing: border-box;
+			overflow: hidden;
+		}
+		
+		#fixed_table td {
+			border-left: 0;
+			border-bottom: 0;
+			line-height: 30px;
+			box-sizing: border-box;
+		}
+		
+		#fixed_table .body {
+			width: 100%;
+			height: 100%;
+			overflow: auto;
+		}
+
+		#fixed_table .body tr:first-child td{
+			border-top:0;
+		}
+		
+		#fixed_table .header {
+			height: 30px;
+			margin-top: -30px;
+			width: 100%;
+			overflow: hidden;
+			position: relative;
+			border-bottom:1px solid #aaa;
+		}
+		
+		#fixed_table .header table {
+			height: 100%;
+			position: absolute;
+			left: 0;
+			top: -1px;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="fixed_table">
+		<div class="header">
+			<table border="1" cellspacing="0" id="fixed_header">
+				<colgroup id="header_cols">
+					<col>
+					<col>
+					<col>
+					<col>
+				</colgroup>
+				<tr>
+					<td>姓名</td>
+					<td>字段1</td>
+					<td>字段2</td>
+					<td>字段3</td>
+				</tr>
+			</table>
+		</div>
+		<div class="body" id="table_body_container">
+			<table border="1" id="table_body" cellspacing="0">
+				<colgroup id="body_cols">
+					<col>
+					<col>
+					<col>
+					<col>
+				</colgroup>
+				<tr>
+					<td>张三</td>
+					<td>123</td>
+					<td>345</td>
+					<td>567</td>
+				</tr>
+				<tr>
+					<td>张三</td>
+					<td>123</td>
+					<td>345</td>
+					<td>567</td>
+				</tr>
+				<tr>
+					<td>张三</td>
+					<td>123</td>
+					<td>345</td>
+					<td>567</td>
+				</tr>
+				<tr>
+					<td>张三</td>
+					<td>123</td>
+					<td>345</td>
+					<td>567</td>
+				</tr>
+				<tr>
+					<td>张三</td>
+					<td>123</td>
+					<td>345</td>
+					<td>567</td>
+				</tr>
+				<tr>
+					<td>张三</td>
+					<td>123</td>
+					<td>345</td>
+					<td>567</td>
+				</tr>
+				<tr>
+					<td>张三</td>
+					<td>123</td>
+					<td>345</td>
+					<td>567</td>
+				</tr>
+				<tr>
+					<td>张三</td>
+					<td>123</td>
+					<td>345</td>
+					<td>567</td>
+				</tr>
+				<tr>
+					<td>张三</td>
+					<td>123</td>
+					<td>345</td>
+					<td>567</td>
+				</tr>
+				<tr>
+					<td>张三</td>
+					<td>123</td>
+					<td>345</td>
+					<td>567</td>
+				</tr>
+				<tr>
+					<td>张三</td>
+					<td>123</td>
+					<td>345</td>
+					<td>567</td>
+				</tr>
+				<tr>
+					<td>张三</td>
+					<td>123</td>
+					<td>345</td>
+					<td>567</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	<script>
+		function idEle(id) {
+			return document.getElementById(id)
+		}
+		var table_body = idEle('table_body');
+		var fixed_header = idEle('fixed_header');
+		var body_container = idEle('table_body_container');
+		var header_cols=idEle('header_cols');
+		var body_cols=idEle('body_cols');
+		var time=4;
+		while(time--){
+			header_cols.getElementsByTagName('col')[time].width='120';
+			body_cols.getElementsByTagName('col')[time].width='120';
+		}
+		// console.log(table_body.offsetWidth, body_container.offsetWidth);
+		table_body.style.width = 120*4+'px';
+		fixed_header.style.width= 120*4+'px';
+
+		body_container.onscroll=function(e){
+			//console.log(e.scrollLeft);
+			fixed_header.style.left=-body_container.scrollLeft+'px';
+		}
+		// var
+	</script>
+</body>
+
+</html>
